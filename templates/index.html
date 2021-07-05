@@ -49,21 +49,20 @@
         </div>
       </div>
       <!-- Section for Hemispheres -->
-      <div class="row" id="mars-hemispheres">
-        <div class="page-header">
-          <h2 class="text-center">Mars Hemispheres</h2>
-        </div>
+      <div class="col-md-12" id="mars-hemispheres">
+        <h2 class="text-center mt-4">Mars Hemispheres</h2>
+      </div>
         {% for hemisphere in mars.hemisphere %}
         <div class="col-md-6">
-          <div class="thumbnail">
-            <img src="{{hemisphere.img.url | default('static/images/error.png', true)}}" alt="...">"
-            <div class="caption"></div>
-              <h3>{{hemisphere.title}}</h3>
-            </div>
+          <img class="card-img-top" src="{{ mars.hemispheres }}" alt="{{ hemisphere.title }}">
+          <div class="card-body">   
+             <h4 class="card-title text-center">{{ hemisphere.title }}</h4> 
+           </div>
           </div>  
         </div>  
-        {%endfor}
+        {%endfor%}
       </div>  
     </div>
   </body>
 </html>
+
