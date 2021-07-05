@@ -102,36 +102,37 @@ def mars_facts():
 # Hemispheres
 
 def hemispheres(browser):
-         
-    # Use browser to visit the URL 
-    url = 'https://marshemispheres.com'
+       
+       
+    url = 'https://marshemispheres.com/'
     browser.visit(url)
-
-    # Create a list to hold the images and titles.
     html = browser.html
-    image_soup = soup(html, 'html.parser')
-
+    html_soup = soup(html, 'html.parser')
     hemisphere_image_urls = []
 
-    # Write code to retrieve the image urls and titles for each hemisphere.
-
-    for i in range (4):
-        time.sleep(5)
-        images = browser.find_by_tag('h3')[i]
-        images.click()
+    for i in range (0, 4):
+        full_image = browser.find_by_tag('h3')[i]
+        full_image.click()
         html = browser.html
-        imgage_soup = soup(html, 'html.parser')
-        full = image_soup.find('a', text='Sample')
-        img_title = image_soup.find_all("h2",class_= "title" )
-        img_url = full['href']
-        dictionary={"title":img_title,"img_url":img_url}
-        hemisphere_image_urls.append(dictionary)
+        img_soup = soup(html, 'html.parser')
+        img_url_real = img_soup.find_all ('img', class_ = 'wide-image')
+        titles_real = img_soup.find_all ('h2')
+
+        for img,title in zip(img_url_real, titles_real):
+            hemispheres = {}
+            imgs = img.get('src')
+            img_url = f'https://data-class-mars-hemispheres.s3.amazonaws.com/Mars_Hemispheres/{imgs}'
+            titles = title.text
+            hemispheres['img_url'] = img_url
+            hemispheres['title'] = titles
+            hemisphere_image_urls.append(hemispheres)
+        
         browser.back()
-              
-    return hemisphere_image_urls    
+
+    return hemisphere_image_urls
     
 if __name__ == "__main__":
 
-    #If running as script, print scraped data
+    # If running as script, print scraped data
     print(scrape_all())
-
+   
