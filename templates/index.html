@@ -52,11 +52,11 @@
       <div class="col-md-12" id="mars-hemispheres">
         <h2 class="text-center mt-4">Mars Hemispheres</h2>
       </div>
-        {% for hemisphere in mars.hemisphere %}
+        {% for hemispheres in mars.hemispheres %}
         <div class="col-md-6">
-          <img class="card-img-top" src="{{ mars.hemispheres }}" alt="{{ hemisphere.title }}">
+          <img class="card-img-top" src="{{ mars.hemispheres }}" alt="{{ hemispheres.title }}">
           <div class="card-body">   
-             <h4 class="card-title text-center">{{ hemisphere.title }}</h4> 
+             <h4 class="card-title text-center">{{ hemispheres.title }}</h4> 
            </div>
           </div>  
         </div>  
