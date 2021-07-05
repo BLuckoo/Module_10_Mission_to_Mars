@@ -21,7 +21,7 @@ def scrape_all():
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
         "last_modified": dt.datetime.now(),
-        "hemis": hemispheres(browser)
+        "hemispheres": hemispheres(browser)
         }
 
     # Stop webdriver and return data
@@ -99,47 +99,38 @@ def mars_facts():
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
 
-# ### Hemispheres
+# Hemispheres
+
 def hemispheres(browser):
-
-    # Use browser to visit the URL 
-
-    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+         
+    url = 'https://marshemispheres.com/'
+    
     browser.visit(url)
 
-
-    # Create a list to hold the images and titles.
+    html = browser.html
     
+    html_soup = soup(html, 'html.parser')
     hemisphere_image_urls = []
 
-    # Write code to retrieve the image urls and titles for each hemisphere.
+    for i in range (0, 4):
+        full_image = browser.find_by_tag('h3')[i]
+        full_image.click()
+        html = browser.html
+        img_soup = soup(html, 'html.parser')
+        img_url_real = img_soup.find_all ('img', class_ = 'wide-image')
+        titles_real = img_soup.find_all ('h2')
 
-    for i in range (4):
-        time.sleep(5)
-        browser.find_by_css('a.product-item h3')[i].click()
-        hemisphere_data = scrape_hemisphere(browser.html)
-        hemisphere_image_urls.append(hemisphere_data)
+        for img,title in zip(img_url_real, titles_real):
+            hemispheres = {}
+            imgs = img.get('src')
+            img_url = f'https://data-class-mars-hemispheres.s3.amazonaws.com/Mars_Hemispheres/{imgs}'
+            titles = title.text
+            hemispheres['img_url'] = img_url
+            hemispheres['title'] = titles
+            hemisphere_image_urls.append(hemispheres)
         browser.back()
     return hemisphere_image_urls
-       
-def scrape_hemisphere(html_text):
-    #parse html text
-    hemi_soup = soup(html_text, "html.parser")
-    #adding try/except for error handling
-    try:
-        title_elem = hemi_soup.find("h2", class_="title").get_text()   
-        sample_elem = hemi_soup.find("a", text="Sample").get("href")
-    except AttributeError:
-        # Image error will return None
-        title_elem = None
-        sample_elem = None
-    hemispheres = {
-        "title": title_elem,
-        "img_url": sample_elem
-    }
-    return hemispheres
-       
-            
+    
 if __name__ == "__main__":
 
     # If running as script, print scraped data
