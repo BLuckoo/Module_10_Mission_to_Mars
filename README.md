@@ -29,7 +29,6 @@ Using Jupyter Notebook, Python, Beautiful Soup, Pandas and Splinter, multiple we
 3. Coding was also added to the HTML file to ensure the responsiveness of the page on multiple devices.
 
 **The following is an illustration of the web page created.**
-http://127.0.0.1:5000/
 
 <p align="center">  
    <img src="https://user-images.githubusercontent.com/82583576/124539733-07558e80-ddec-11eb-920f-364a53430d4b.png"
