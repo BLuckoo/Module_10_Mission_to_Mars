@@ -115,7 +115,7 @@ def hemispheres(browser):
         full_image.click()
         html = browser.html
         img_soup = soup(html, 'html.parser')
-        img_url_real = img_soup.find_all ('img', class_ = 'wide-image')
+        img_url_real = img_soup.find_all ('img', class_='wide-image')
         titles_real = img_soup.find_all ('h2')
 
         for img,title in zip(img_url_real, titles_real):
